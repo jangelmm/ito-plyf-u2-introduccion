@@ -33,7 +33,6 @@ fact6 n = product [1..n]  -- product calcula producto, [1..n] genera lista 1,2,3
 fact7 :: Integer -> Integer
 fact7 n = foldl (*) 1 [1..n]  -- foldl aplica (*) acumulativamente sobre la lista
 
--- === FUNCIÓN PRINCIPAL OBLIGATORIA ===
 -- Haskell necesita main para ejecutar el programa
 main :: IO ()
 main = do
