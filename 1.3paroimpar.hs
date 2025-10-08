@@ -10,6 +10,7 @@ impar2 x = not (even x)  -- Si no es par, entonces es impar
 impar3 :: Integer -> Bool
 impar3 = not . even  -- Aplica even y luego not al resultado
 
+-- NOTA (se implementó de manera diferente) ================================================================================
 -- Método 4: Por recursión (versión corregida)
 impar4 :: Integer -> Bool
 impar4 x
@@ -17,7 +18,7 @@ impar4 x
     | x == 0 = False       -- 0 no es impar
     | x == 1 = True        -- 1 es impar
     | otherwise = impar4 (x - 2)  -- Resta 2 hasta llegar a 0 o 1
-
+-- NOTA ================================================================================
 
 -- Función principal para probar
 
