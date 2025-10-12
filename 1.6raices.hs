@@ -1,43 +1,28 @@
--- Método 1: Definición directa
-raices1 :: Double -> Double -> Double -> [Double]
-raices1 a b c = [(-b + sqrt(b*b - 4*a*c)) / (2*a),
-                 (-b - sqrt(b*b - 4*a*c)) / (2*a)]
+import Test.QuickCheck
 
--- Método 2: Con entornos locales (más eficiente y legible)
-raices2 :: Double -> Double -> Double -> [Double]
-raices2 a b c =
-    [(-b + d) / n, (-b - d) / n]
-    where 
-        d = sqrt(b*b - 4*a*c)  -- discriminante
-        n = 2 * a              -- denominador
+-- 1. Definición directa
+raices_1 :: Double -> Double -> Double -> [Double]
+raices_1 a b c = [(-b + sqrt(b*b - 4*a*c)) / (2*a),
+                  (-b - sqrt(b*b - 4*a*c)) / (2*a)]
 
--- Definimos raices como el método 2 (más eficiente)
-raices :: Double -> Double -> Double -> [Double]
-raices = raices2
+-- 2. Con entornos locales (mejor legibilidad)
+raices_2 :: Double -> Double -> Double -> [Double]
+raices_2 a b c = [(-b + d)/n, (-b - d)/n]
+  where d = sqrt(b*b - 4*a*c)
+        n = 2 * a
 
--- Función principal para probar
+-- Propiedad de equivalencia con tolerancia
+prop_equivalencia :: Double -> Double -> Double -> Property
+prop_equivalencia a b c =
+  a /= 0 && b*b - 4*a*c >= 0 ==> 
+    let r1 = raices_1 a b c
+        r2 = raices_2 a b c
+    in all (\(x,y) -> abs (x - y) < 1e-10) (zip r1 r2)
 
+-- Main para pruebas rápidas
 main :: IO ()
 main = do
-    putStrLn "Raíces de ecuación cuadrática:"
-    putStrLn "================================="
-    
-    putStrLn "Ejemplo: raices 1 3 2"
-    putStrLn "Ecuación: x² + 3x + 2 = 0"
-    putStrLn "Solución: x = -1, x = -2"
-    putStrLn ""
-    
-    putStrLn "Resultados:"
-    putStrLn $ "raices1 1 3 2 = " ++ show (raices1 1 3 2)
-    putStrLn $ "raices2 1 3 2 = " ++ show (raices2 1 3 2)
-    putStrLn $ "raices  1 3 2 = " ++ show (raices  1 3 2)
-    
-    putStrLn "\n-- Más ejemplos:"
-    putStrLn "Ecuación: x^2 - 5x + 6 = 0"
-    putStrLn $ "raices 1 (-5) 6 = " ++ show (raices 1 (-5) 6) ++ "  (x = 2, x = 3)"
-    
-    putStrLn "\nEcuación: x^2 - 4 = 0" 
-    putStrLn $ "raices 1 0 (-4) = " ++ show (raices 1 0 (-4)) ++ "  (x = 2, x = -2)"
-    
-    putStrLn "\nEcuación: x^2 + 1 = 0 (raíces complejas)"
-    putStrLn $ "raices 1 0 1 = " ++ show (raices 1 0 1) ++ "  (NaN = raíces complejas)"
+  putStrLn "Pruebas de raices de ecuaciones cuadráticas:"
+  print $ raices_1 1 3 2 -- [-1.0, -2.0]
+  print $ raices_2 1 3 2 -- [-1.0, -2.0]
+  quickCheck prop_equivalencia

@@ -1,12 +1,17 @@
--- Función identidad
+import Test.QuickCheck
+
+-- Definición de la función identidad
 n_id :: a -> a
 n_id x = x
 
--- Función principal
+-- Propiedad de equivalencia con la función predefinida id
+prop_equivalencia :: Int -> Bool
+prop_equivalencia x = n_id x == id x
+
+-- Main para pruebas rápidas
 main :: IO ()
 main = do
-    putStrLn "Función identidad:"
-    putStrLn $ "n_id 3 = " ++ show (n_id 3)
-    putStrLn $ "n_id 'a' = " ++ show (n_id 'a')
-    putStrLn $ "n_id True = " ++ show (n_id True)
-    putStrLn $ "n_id \"hola\" = " ++ show (n_id "hola")
+  putStrLn "Pruebas de identidad:"
+  print $ n_id 3        -- 3
+  print $ n_id "hola"   -- "hola"
+  quickCheck prop_equivalencia

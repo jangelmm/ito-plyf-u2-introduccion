@@ -1,3 +1,5 @@
+import Test.QuickCheck
+
 -- Función anterior con patrones (versión corregida)
 anterior_1 :: Int -> Int
 anterior_1 n = n - 1
@@ -6,15 +8,14 @@ anterior_1 n = n - 1
 anterior_2 :: Int -> Int
 anterior_2 n | n > 0 = n - 1
 
--- Función principal
+-- Propiedad de equivalencia para números naturales
+prop_equivalencia :: Int -> Property
+prop_equivalencia n = n > 0 ==> anterior_1 n == anterior_2 n
+
+-- Main para pruebas rápidas
 main :: IO ()
 main = do
-    putStrLn "Función anterior:"
-    putStrLn $ "anterior_1 3 = " ++ show (anterior_1 3)
-    putStrLn $ "anterior_2 3 = " ++ show (anterior_2 3)
-    putStrLn $ "anterior_1 5 = " ++ show (anterior_1 5)
-    putStrLn $ "anterior_2 5 = " ++ show (anterior_2 5)
-    
-    -- putStrLn "\n Cuidado con 0:"
-    -- putStrLn "anterior_1 0 = " ++ show (anterior_1 0)
-    -- anterior_2 0 causaría error porque no está definido para n <= 0
+  putStrLn "Pruebas de anterior:"
+  print $ anterior_1 3  -- 2
+  print $ anterior_2 5  -- 4
+  quickCheck prop_equivalencia

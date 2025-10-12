@@ -1,51 +1,38 @@
+import Test.QuickCheck
 
--- Primero necesitamos la función cuadrado
+-- Reutilizamos la función cuadrado del ejercicio anterior
 cuadrado :: Integer -> Integer
 cuadrado x = x * x
 
--- Método 1: Usando sum, map y cuadrado
-suma_de_cuadrados1 :: [Integer] -> Integer
-suma_de_cuadrados1 l = sum (map cuadrado l)
+-- 1. Con sum y map usando cuadrado
+suma_de_cuadrados_1 :: [Integer] -> Integer
+suma_de_cuadrados_1 l = sum (map cuadrado l)
 
--- Método 2: Usando sum y listas intensionales
-suma_de_cuadrados2 :: [Integer] -> Integer
-suma_de_cuadrados2 l = sum [x * x | x <- l]
+-- 2. Con sum y listas por comprensión
+suma_de_cuadrados_2 :: [Integer] -> Integer
+suma_de_cuadrados_2 l = sum [x*x | x <- l]
 
--- Método 3: Usando sum, map y función lambda
-suma_de_cuadrados3 :: [Integer] -> Integer
-suma_de_cuadrados3 l = sum (map (\x -> x * x) l)
+-- 3. Con sum, map y lambda
+suma_de_cuadrados_3 :: [Integer] -> Integer
+suma_de_cuadrados_3 l = sum (map (\x -> x*x) l)
 
--- Método 4: Por recursión
-suma_de_cuadrados4 :: [Integer] -> Integer
-suma_de_cuadrados4 [] = 0
-suma_de_cuadrados4 (x:xs) = x * x + suma_de_cuadrados4 xs
+-- 4. Por recursión
+suma_de_cuadrados_4 :: [Integer] -> Integer
+suma_de_cuadrados_4 []     = 0
+suma_de_cuadrados_4 (x:xs) = x*x + suma_de_cuadrados_4 xs
 
--- Definimos la función principal
-suma_de_cuadrados :: [Integer] -> Integer
-suma_de_cuadrados = suma_de_cuadrados1
+-- Propiedad de equivalencia
+prop_equivalencia :: [Integer] -> Bool
+prop_equivalencia xs =
+  suma_de_cuadrados_1 xs == suma_de_cuadrados_2 xs &&
+  suma_de_cuadrados_1 xs == suma_de_cuadrados_3 xs &&
+  suma_de_cuadrados_1 xs == suma_de_cuadrados_4 xs
 
-
--- Función principal para probar
-
+-- Main para pruebas rápidas
 main :: IO ()
 main = do
-    putStrLn "Probando suma de cuadrados:"
-    putStrLn "=============================="
-    
-    let lista = [1, 2, 3]
-    
-    putStrLn $ "Lista: " ++ show lista
-    putStrLn $ "1² + 2² + 3² = 1 + 4 + 9 = 14"
-    putStrLn ""
-    
-    putStrLn "Resultados de cada función:"
-    putStrLn $ "suma_de_cuadrados1 [1,2,3] = " ++ show (suma_de_cuadrados1 lista)
-    putStrLn $ "suma_de_cuadrados2 [1,2,3] = " ++ show (suma_de_cuadrados2 lista)
-    putStrLn $ "suma_de_cuadrados3 [1,2,3] = " ++ show (suma_de_cuadrados3 lista)
-    putStrLn $ "suma_de_cuadrados4 [1,2,3] = " ++ show (suma_de_cuadrados4 lista)
-    putStrLn $ "suma_de_cuadrados  [1,2,3] = " ++ show (suma_de_cuadrados  lista)
-    
-    putStrLn "\n-- Más ejemplos:"
-    putStrLn $ "suma_de_cuadrados [] = " ++ show (suma_de_cuadrados []) ++ "  (lista vacía = 0)"
-    putStrLn $ "suma_de_cuadrados [5] = " ++ show (suma_de_cuadrados [5]) ++ "  (5^2 = 25)"
-    putStrLn $ "suma_de_cuadrados [1,0,3] = " ++ show (suma_de_cuadrados [1,0,3]) ++ "  (1 + 0 + 9 = 10)"
+  putStrLn "Pruebas de la función suma_de_cuadrados:"
+  print $ suma_de_cuadrados_1 [1,2,3] -- 14
+  print $ suma_de_cuadrados_2 [4,5]   -- 41
+  print $ suma_de_cuadrados_3 [0,1,2] -- 5
+  print $ suma_de_cuadrados_4 [3,3,3] -- 27

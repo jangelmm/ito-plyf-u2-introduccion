@@ -1,19 +1,19 @@
--- Redefinición del operador &&
-(&&&) :: Bool -> Bool -> Bool
-False &&& x = False  -- Si el primer valor es False, resultado es False
-True  &&& x = x     -- Si el primer valor es True, resultado es el segundo valor
+import Test.QuickCheck
 
--- Función principal
+-- Redefinición de &&
+(&&&) :: Bool -> Bool -> Bool
+False &&& _ = False
+True  &&& x = x
+
+-- Propiedad de equivalencia usando la función predefinida &&
+prop_equivalencia :: Bool -> Bool -> Bool
+prop_equivalencia x y = (x &&& y) == (x && y)
+
+-- Main para pruebas rápidas
 main :: IO ()
 main = do
-    putStrLn "Conjunción (&&&):"
-    putStrLn $ "True  &&& True  = " ++ show (True &&& True)
-    putStrLn $ "True  &&& False = " ++ show (True &&& False)
-    putStrLn $ "False &&& True  = " ++ show (False &&& True)
-    putStrLn $ "False &&& False = " ++ show (False &&& False)
-    
-    putStrLn "\nComparación con && de Haskell:"
-    putStrLn $ "True  &&  True  = " ++ show (True && True)
-    putStrLn $ "True  &&  False = " ++ show (True && False)
-    putStrLn $ "False &&  True  = " ++ show (False && True)
-    putStrLn $ "False &&  False = " ++ show (False && False)
+  putStrLn "Pruebas de &&:"
+  print $ True &&& False   -- False
+  print $ True &&& True    -- True
+  print $ False &&& True   -- False
+  quickCheck prop_equivalencia

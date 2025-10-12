@@ -1,3 +1,5 @@
+import Test.QuickCheck
+
 -- 1. Por patrones (n+1 no funciona en Haskell moderno, usamos esta versión)
 potencia_1 :: Num a => a -> Int -> a
 potencia_1 x 0 = 1
@@ -19,14 +21,18 @@ potencia_3 x n | n > 0 = f x (n-1) x
                      g x n | even n    = g (x*x) (n `quot` 2)
                            | otherwise = f x (n-1) (x*y)
 
--- Función principal
+-- Propiedad de equivalencia para exponentes no negativos
+prop_equivalencia :: Int -> Int -> Property
+prop_equivalencia x n = n >= 0 ==> 
+    (potencia_1 x n == x ^ n &&
+     potencia_2 x n == x ^ n &&
+     potencia_3 x n == x ^ n)
+
+-- Main para pruebas rápidas
 main :: IO ()
 main = do
-    putStrLn "Función potencia:"
-    putStrLn $ "potencia_1 2 4 = " ++ show (potencia_1 2 4)
-    putStrLn $ "potencia_2 2 4 = " ++ show (potencia_2 2 4)
-    putStrLn $ "potencia_3 2 4 = " ++ show (potencia_3 2 4)
-    
-    putStrLn $ "potencia_1 3.1 2 = " ++ show (potencia_1 3.1 2)
-    putStrLn $ "potencia_2 3.1 2 = " ++ show (potencia_2 3.1 2)
-    putStrLn $ "potencia_3 3.1 2 = " ++ show (potencia_3 3.1 2)
+  putStrLn "Pruebas de potencia:"
+  print $ potencia_1 2 4      -- 16
+  print $ potencia_2 3 3      -- 27
+  print $ potencia_3 3 2      -- 9
+  quickCheck prop_equivalencia
