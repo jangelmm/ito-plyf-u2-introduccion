@@ -36,3 +36,4 @@ main = do
   print $ impar2 7    -- True
   print $ impar3 6    -- False
   print $ impar4 5    -- True
+  quickCheck prop_equivalencia

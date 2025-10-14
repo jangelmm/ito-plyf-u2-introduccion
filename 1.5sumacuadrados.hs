@@ -36,3 +36,4 @@ main = do
   print $ suma_de_cuadrados_2 [4,5]   -- 41
   print $ suma_de_cuadrados_3 [0,1,2] -- 5
   print $ suma_de_cuadrados_4 [3,3,3] -- 27
+  quickCheck prop_equivalencia

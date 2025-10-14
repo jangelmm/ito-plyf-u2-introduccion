@@ -19,8 +19,8 @@ cuadrado = cuadrado_1
 -- Propiedad de equivalencia
 prop_equivalencia :: Int -> Bool
 prop_equivalencia x =
-  cuadrado_1 x == cuadrado_2 x &&
-  cuadrado_1 x == cuadrado_3 x
+  cuadrado_2 x == cuadrado_1 x &&
+  cuadrado_3 x == cuadrado_1 x
 
 -- Main para pruebas rápidas
 main :: IO ()
@@ -30,3 +30,4 @@ main = do
   print $ cuadrado_1 5  -- 25
   print $ cuadrado_2 7  -- 49
   print $ cuadrado_3 10 -- 100
+  quickCheck prop_equivalencia

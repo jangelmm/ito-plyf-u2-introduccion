@@ -29,7 +29,7 @@ fact7 :: Integer -> Integer
 fact7 n = foldl (*) 1 [1..n]
 
 factorial :: Integer -> Integer
-factorial = fact5
+factorial = fact3
 
 prop_equivalencia :: Integer -> Property
 prop_equivalencia x =
@@ -43,6 +43,15 @@ prop_equivalencia x =
 -- Main para pruebas rápidas
 main :: IO ()
 main = do
-  putStrLn "Pruebas de factorial:"
-  print $ factorial 4         -- 24
+  putStrLn "=== Pruebas de factorial ==="
+  putStrLn $ "fact1 4 = " ++ show (fact1 4)
+  putStrLn $ "fact2 4 = " ++ show (fact2 4)
+  putStrLn $ "fact3 4 = " ++ show (fact3 4)
+  putStrLn $ "fact4 4 = " ++ show (fact4 4)
+  putStrLn $ "fact5 4 = " ++ show (fact5 4)
+  putStrLn $ "fact6 4 = " ++ show (fact6 4)
+  putStrLn $ "fact7 4 = " ++ show (fact7 4)
+  putStrLn $ "factorial 4 = " ++ show (factorial 4)
+
+  putStrLn "\n=== Verificación con QuickCheck ==="
   quickCheck prop_equivalencia
